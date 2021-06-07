@@ -7,7 +7,7 @@ The work covered by the EUPL can be used/merged and distributed in other
    and other licences listed as compatible in the EUPL Appendix. This
    applies to the other (combined) work, while the original project
    stays covered by the EUPL without re-licensing.
-Alternatively, the work in folder src/osi_fmu may be used under the
+Alternatively, the work in folder src/model may be used under the
    terms of the Mozilla Public License, v. 2.0. If a copy of the
    MPL was not distributed with this file, you can obtain one at
    http://mozilla.org/MPL/2.0/.
@@ -20,3 +20,7 @@ Both the work in folder src/osmp and the work in folder
 The files in folder lib/fmi2 are licensed by the copyright holders
    under the 2-Clause BSD License. See lib/fmi2/LICENCE.txt or
    https://opensource.org/licenses/BSD-2-Clause for licence text.
+
+The work in folder lib/eigen is distributed under
+   Mozilla Public License, v. 2.0. See 
+   http://eigen.tuxfamily.org/index.php?title=Main_Page#License for licence text.

@@ -1,16 +1,18 @@
 # OSI Sensor Model Packaging FMU Framework with Example Strategies
 
-<img style="float: right;" src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/object-based-generic-perception-object-model/uploads/17c84e9ec0acf0fac2e35855f038ad0b/fzdlogo.jpg" width="100" />
+<img align="right" src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/object-based-generic-perception-object-model/uploads/17c84e9ec0acf0fac2e35855f038ad0b/fzdlogo.jpg" width="100" />
 This is the OSMP FMU Framework provided with example strategies and profiles.
+<br>
+<img src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/fzd-osmp-model-framework/uploads/172e7820150fb48818bce2c57ce66f85/OSMP_Model_Framework.png" width="800" />
 
-It is based on adaptions of OSI Sensor Model Packaging (OSMP) to load individual code modules called strategies and get parameters from profiles into the strategies.
+The framework is based on adaptions of OSI Sensor Model Packaging (OSMP) to load individual code modules called strategies and get parameters from profiles into the strategies.
 OSMP specifies ways in which models (like e.g. environmental effect models, sensor models and logical models) using the [Open Simulation Interface (OSI)](https://github.com/OpenSimulationInterface/open-simulation-interface) are to be packaged for their use in simulation environments using FMI 2.0.
 
 ## Important
 
 This work is based on the [`OSMPDummySensor`](https://github.com/OpenSimulationInterface/osi-sensor-model-packaging/tree/master/examples/OSMPDummySensor) example from the [Open Simulation Inferface Sensor Model Packaging project](https://github.com/OpenSimulationInterface/osi-sensor-model-packaging).
 
-Before modifying files, carefully read the files `COPYING` and `CONTRIBUTING.md`.
+Before modifying files, carefully read the files [COPYING](COPYING) and [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### Usage
 
@@ -19,41 +21,57 @@ The `apply()` function of a strategy is called by the `do_calc()` function of th
 
 When building and installing, the framework will build an fmu package into `_FMU_INSTALL_DIR_`, which can be used with a simulation tool like CarMaker, dSpace ASM or others.
 
-### Installation guide for Ubuntu 18.04.
+## Build Instructions for Ubuntu 18.04 / 20.04
 
-#### Dependencies
+When building and installing, the framework will build an FMU package, which can be used with a simulation tool like CarMaker, dSpace ASM or others.
 
-##### Install `cmake` 3.12:
+### Install Dependencies
 
-Install `cmake` 3.12 for example as instructed [here](https://cmake.org/install/).
+1. Install cmake 3.12: e.g. with
+   ```bash
+   $ git clone https://github.com/Kitware/CMake
+   $ sudo apt install libssl-dev
+   $ cd CMake
+   $ ./bootstrap
+   $ make -j
+   $ sudo make install
+   ```
+2. Install protobuf 3.0.0:
+   * Check your version via `protoc --version`. It should output: `libprotoc 3.0.0`
+   * If needed, you can install it via `sudo apt-get install libprotobuf-dev protobuf-compiler`
+   * or from source:
+     * Download it from https://github.com/protocolbuffers/protobuf/releases/tag/v3.0.0 and extract the archive.
+     * Try to run `./autogen.sh`, if it failes, download the gmock-1.7.0.zip from https://pkgs.fedoraproject.org/repo/pkgs/gmock/gmock-1.7.0.zip/073b984d8798ea1594f5e44d85b20d66/gmock-1.7.0.zip, extract it into the protobuf folder and rename the gmock-1.7.0 folter to gmock.
+     * Proceed with the install with
+     ```bash
+     $ make
+     $ sudo make install
+     $ sudo ldconfig # refresh shared library cache.
+     ```
 
-##### Install `protobuf` 3.0.0:
+### Clone with Submodules, Build, and Install
 
-Check your version via `protoc --version`. It should output `libprotoc 3.0.0`
-
-If needed, you can install it via
-```bash
-$ sudo apt-get install libprotobuf-dev protobuf-compiler
-```
-or from source by downloading it from https://github.com/protocolbuffers/protobuf/releases/tag/v3.0.0 and install it.
-
-
-#### Clone, build, and install
-
-1. Clone this repository with submodules (pass `--recurse-submodules` to `git clone`), as OSI is included in this repository as a submodule.
-2. Execute in the extracted project root directory:
-    ```shell script
-    mkdir cmake-build
-    cd cmake-build
-    # if FMU_INSTALL_DIR is not set, CMAKE_BINARY_DIR is used
-    cmake -DCMAKE_BUILD_TYPE=Release -DFMU_INSTALL_DIR:PATH=/opt/osifmu ..
-    make -j N_JOBS
+1. Clone this repository <ins>with submodules</ins>:
+    ```bash
+    $ git clone https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-lidar-object-model.git --recurse-submodules
+    ```
+    or alternatively initialize submodules after cloning:
+    ```
+    $ git submodule update --init
+    ```
+2. Build the model by executing in the extracted project root directory:
+    ```bash
+    $ mkdir cmake-build
+    $ cd cmake-build
+    # If FMU_INSTALL_DIR is not set, CMAKE_BINARY_DIR is used
+    $ cmake -DCMAKE_BUILD_TYPE=Release -DFMU_INSTALL_DIR:PATH=/opt/osifmu ..
+    $ make -j N_JOBS
     ```
 3. Take FMU from `FMU_INSTALL_DIR`
 
-    Please note that sources are not packed into the FMU at the moment.
+    (Please note that sources are not packed into the FMU at the moment.)
 
-### How to use (= extend) this framework
+## How to use (= extend) this framework
 
 #### … with a different model name
 
@@ -126,15 +144,27 @@ If it is not set by the FMU master, the first name in `src/model/profiles/profil
 
 ## Licensing
 
-**Please read file `COPYING`, which is located in the project root, carefully.**
-
-The work (located in `src/model`) created by Institute of Automotive Engineering of Technical University of Darmstadt is licensed under the EUPL-1.2 and can be used/merged and distributed in other works covered by GPL-2.0, GPL-3.0, LGPL, AGPL, CeCILL, OSL, EPL, MPL and other licences listed as compatible in the EUPL Appendix. This applies to the other (combined) work, while the original project stays covered by the EUPL without re-licensing. Alternatively, the work in folder src/osmp may be used under the terms of the MPL-2.0.
-
-The larger work, including the modifications to OSMP dummy sensor, is subject to the terms of MPL-2.0 (but this does not affect the coverage of the incorporated components by their respective licenses).
+**Please read file [COPYING](COPYING), which is located in the project root, carefully.**
 
 ## Credits
+C. Linnhoff, P. Rosenberger, M. F. Holder, N. Cianciaruso, and H. Winner: “Highly Parameterizable and Generic Perception Sensor Model Architecture - A Modular Approach for Simulation Based Safety Validation of Automated Driving” in 6. Internationale ATZ-Fachtagung Automated Driving 2020, Wiesbaden, Germany, 2020
+
+If you find our work useful in your research, please consider citing: 
+
+```
+@inproceedings{linnhoff_highly_2020,
+   title = {Highly {Parameterizable} and {Generic} {Perception} {Sensor} {Model} {Architecture}},
+   booktitle = {6. {Internationale} {ATZ}-{Fachtagung} {Automated} {Driving}},
+   author = {Linnhoff, Clemens and Rosenberger, Philipp and Holder, Martin Friedrich and Cianciaruso, Nicodemo and Winner, Hermann},
+   address = {Wiesbaden},
+   year = {2020}
+}
+```
+
+This work received funding from SET Level and VVM of the PEGASUS project family, promoted by the German Federal Ministry for Economic Affairs and Energy based on a decision of the Deutsche Bundestag.
 
 Thanks to all contributors of the following libraries:
 
 - [Open Simulation Interface](https://github.com/OpenSimulationInterface/open-simulation-interface), a generic interface based on protocol buffers for the environmental perception of automated driving functions in virtual scenarios
 - [FMI Version 2.0: FMI for Model Exchange and Co-Simulation](https://fmi-standard.org/downloads/)
+- [Eigen](http://eigen.tuxfamily.org/), a C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms.
