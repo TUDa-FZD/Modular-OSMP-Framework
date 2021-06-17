@@ -1,4 +1,4 @@
-# OSI Sensor Model Packaging FMU Framework with Example Strategies
+# Modular OSI Sensor Model Packaging FMU Framework with Example Strategies
 
 <img align="right" src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/object-based-generic-perception-object-model/uploads/17c84e9ec0acf0fac2e35855f038ad0b/fzdlogo.jpg" width="100" />
 This is the OSMP FMU Framework provided with example strategies and profiles.
@@ -6,70 +6,40 @@ This is the OSMP FMU Framework provided with example strategies and profiles.
 <img src="https://gitlab.com/tuda-fzd/perception-sensor-modeling/fzd-osmp-model-framework/uploads/172e7820150fb48818bce2c57ce66f85/OSMP_Model_Framework.png" width="800" />
 
 The framework is based on adaptions of OSI Sensor Model Packaging (OSMP) to load individual code modules called strategies and get parameters from profiles into the strategies.
-OSMP specifies ways in which models (like e.g. environmental effect models, sensor models and logical models) using the [Open Simulation Interface (OSI)](https://github.com/OpenSimulationInterface/open-simulation-interface) are to be packaged for their use in simulation environments using FMI 2.0.
-
-## Important
-
-This work is based on the [`OSMPDummySensor`](https://github.com/OpenSimulationInterface/osi-sensor-model-packaging/tree/master/examples/OSMPDummySensor) example from the [Open Simulation Inferface Sensor Model Packaging project](https://github.com/OpenSimulationInterface/osi-sensor-model-packaging).
-
-Before modifying files, carefully read the files [COPYING](COPYING) and [CONTRIBUTING.md](CONTRIBUTING.md).
-
-### Usage
+OSMP specifies ways in which models using the [Open Simulation Interface (OSI)](https://github.com/OpenSimulationInterface/open-simulation-interface) are to be packaged for their use in simulation environments using [FMI 2.0](https://fmi-standard.org).
 
 The actual logic of the model is packed in so called strategies.
-The `apply()` function of a strategy is called by the `do_calc()` function of the OSMP Framework.
+This is where the magic happens.
+The `apply()` function of the strategy is called by the `do_calc()` function of the Framework.
+There are two exemplary strategies delivered with this framework:
 
-When building and installing, the framework will build an fmu package into `_FMU_INSTALL_DIR_`, which can be used with a simulation tool like CarMaker, dSpace ASM or others.
+1. Example strategy: It simply logs some input data to show that it is running.
+2. CSV output gt objects strategy: It outputs a .csv file to `CSV_PATH` set via `CMakeLists.txt` containing moving objects from the received ground truth.
 
-## Build Instructions for Ubuntu 18.04 / 20.04
+## Configuration
 
-When building and installing, the framework will build an FMU package, which can be used with a simulation tool like CarMaker, dSpace ASM or others.
+### Model name
 
-### Install Dependencies
+The model's name (in this case "FrameworkDemoModel") used for CMake-projects and the FMU at the end is defined in file `model_name.conf` located at `src/model`.
 
-1. Install cmake 3.12: e.g. with
-   ```bash
-   $ git clone https://github.com/Kitware/CMake
-   $ sudo apt install libssl-dev
-   $ cd CMake
-   $ ./bootstrap
-   $ make -j
-   $ sudo make install
-   ```
-2. Install protobuf 3.0.0:
-   * Check your version via `protoc --version`. It should output: `libprotoc 3.0.0`
-   * If needed, you can install it via `sudo apt-get install libprotobuf-dev protobuf-compiler`
-   * or from source:
-     * Download it from https://github.com/protocolbuffers/protobuf/releases/tag/v3.0.0 and extract the archive.
-     * Try to run `./autogen.sh`, if it failes, download the gmock-1.7.0.zip from https://pkgs.fedoraproject.org/repo/pkgs/gmock/gmock-1.7.0.zip/073b984d8798ea1594f5e44d85b20d66/gmock-1.7.0.zip, extract it into the protobuf folder and rename the gmock-1.7.0 folter to gmock.
-     * Proceed with the install with
-     ```bash
-     $ make
-     $ sudo make install
-     $ sudo ldconfig # refresh shared library cache.
-     ```
+### Install path
 
-### Clone with Submodules, Build, and Install
+When building and installing, the framework will build an FMU package into `FMU_INSTALL_DIR`, which can be used with a simulation tool that supports OSI and fills the required fields listed below.
 
-1. Clone this repository <ins>with submodules</ins>:
-    ```bash
-    $ git clone https://gitlab.com/tuda-fzd/perception-sensor-modeling/reflection-based-lidar-object-model.git --recurse-submodules
-    ```
-    or alternatively initialize submodules after cloning:
-    ```
-    $ git submodule update --init
-    ```
-2. Build the model by executing in the extracted project root directory:
-    ```bash
-    $ mkdir cmake-build
-    $ cd cmake-build
-    # If FMU_INSTALL_DIR is not set, CMAKE_BINARY_DIR is used
-    $ cmake -DCMAKE_BUILD_TYPE=Release -DFMU_INSTALL_DIR:PATH=/opt/osifmu ..
-    $ make -j N_JOBS
-    ```
-3. Take FMU from `FMU_INSTALL_DIR`
+### VariableNamingConvention
 
-    (Please note that sources are not packed into the FMU at the moment.)
+The parameter variableNamingConvention for the FMU specified within the modelDescription.xml is taken from file `variableNamingConvention.conf` located at `src/osmp`.
+Possible values are "flat" or "structured".
+
+### Profiles for Parameterization
+
+The profiles are parameterized in the files `profile_*.hpp.in`.
+The parameters are declared in the files `profile.hpp.in`.
+The profiles can be extended by the strategies with additional parameters and values in their respective folders.
+
+The profile to be loaded for simulation is set via a model parameter defined in the `modelDescription.xml` of the FMU.
+The first name in `src/model/profiles/profile_list.conf` is taken as default.
+If you would like to have a different one or if your simulation master does not support the configuration of model parameters, you have to adapt the *start* value of the parameter `profile` in `src/osmp/modelDescription.in.xml`.
 
 ## How to use (= extend) this framework
 
@@ -126,7 +96,7 @@ Have a look at the existing strategies to get an idea about how easy it is to in
    /* TODO add further profiles and profile generators here */
    #include <model/profiles/profile_NAME.hpp>
    
-   bool CFZDSensorModel::try_load_profile(const std::string &name) {
+   bool CFrameworkPackaging::try_load_profile(const std::string &name) {
       if (name == "NAME") {
          profile = model::profile::NAME::generate();
          return true;
@@ -137,10 +107,75 @@ Have a look at the existing strategies to get an idea about how easy it is to in
    }
    ```
 
-**Note:**
-The profile to be loaded is set via a model parameter defined in the `modelDescription.xml` of the FMU.
-It can be set by the FMU master.
-If it is not set by the FMU master, the first name in `src/model/profiles/profile_list.conf` is simply taken as default.
+## Build Instructions in Windows 10
+
+### Install Dependencies in Windows 10
+
+1. Install cmake from https://github.com/Kitware/CMake/releases/download/v3.20.3/cmake-3.20.3-windows-x86_64.msi
+2. Install protobuf for [MSYS-2020](install_protobuf_Win64_MSYS-2020.md) or [Visual Studio 2017](install_protobuf_Win64_VS2017.md)
+
+### Clone with Submodules, Build, and Install in Windows 10
+
+1. Clone this repository <ins>with submodules</ins>:
+   ```bash
+   $ git clone https://gitlab.com/tuda-fzd/perception-sensor-modeling/modular-osmp-framework.git --recurse-submodules
+   ```
+2. Build the model in [MSYS-2020](install_model_Win64_MSYS-2020.md) or [Visual Studio 2017](install_model_Win64_VS2017.md)
+3. Take FMU from `FMU_INSTALL_DIR`
+
+    (Please note that sources are not packed into the FMU at the moment.)
+
+## Build Instructions in Ubuntu 18.04 / 20.04
+
+### Install Dependencies in Ubuntu 18.04 / 20.04
+
+1. Install cmake 3.12
+   * as told in [these install instructions](install_cmake_ubuntu_3-12.md)
+2. Install protobuf 3.0.0:
+   * Check your version via `protoc --version`. It should output: `libprotoc 3.0.0`
+   * If needed, you can install it via `sudo apt-get install libprotobuf-dev protobuf-compiler`
+   * or from source:
+     * Download it from https://github.com/protocolbuffers/protobuf/releases/tag/v3.0.0 and extract the archive.
+     * Try to run `./autogen.sh`, if it failes, download the gmock-1.7.0.zip from https://pkgs.fedoraproject.org/repo/pkgs/gmock/gmock-1.7.0.zip/073b984d8798ea1594f5e44d85b20d66/gmock-1.7.0.zip, extract it into the protobuf folder and rename the gmock-1.7.0 folter to gmock.
+     * Proceed with the install with
+     ```bash
+     $ make
+     $ sudo make install
+     $ sudo ldconfig # refresh shared library cache.
+     ```
+3. <ins>For ROS-Output-Strategies:</ins> Install ROS melodic (Ubuntu 18.04) / noetic (Ubuntu 20.04)
+   * **Ubuntu 18.04: ROS melodic** <br> http://wiki.ros.org/melodic/Installation/Ubuntu (go with `desktop-full`)
+   * **Ubuntu 20.04: ROS noetic** <br> http://wiki.ros.org/noetic/Installation/Ubuntu (go with `desktop-full`)
+
+### Clone with Submodules, Build, and Install in Ubuntu 18.04 / 20.04
+
+1. Clone this repository <ins>with submodules</ins>:
+    ```bash
+    $ git clone https://gitlab.com/tuda-fzd/perception-sensor-modeling/modular-osmp-framework.git --recurse-submodules
+    ```
+2. <ins>For ROS-Output-Strategies:</ins> Change CMakeLists.txt in every ROS-Strategy according to ROS-version
+   * In `src/model/strategies/ros-.../CMakeLists.txt` change the two lines
+     - **Ubuntu 18.04: ROS melodic**
+       ```CMake
+       list(APPEND CMAKE_PREFIX_PATH /opt/ros/melodic/)
+       set(PYTHONPATH /opt/ros/melodic/lib/python2.7/dist-packages)
+       ```
+     - **Ubuntu 20.04: ROS noetic**
+       ```CMake
+       list(APPEND CMAKE_PREFIX_PATH /opt/ros/noetic/)
+       set(PYTHONPATH /opt/ros/melodic/lib/python3/dist-packages)
+       ```
+3. Build the model by executing in the extracted project root directory:
+    ```bash
+    $ mkdir cmake-build
+    $ cd cmake-build
+    # If FMU_INSTALL_DIR is not set, CMAKE_BINARY_DIR is used
+    $ cmake -DCMAKE_BUILD_TYPE=Release -DFMU_INSTALL_DIR:PATH=/tmp ..
+    $ make -j N_JOBS
+    ```
+4. Take FMU from `FMU_INSTALL_DIR`
+
+    (Please note that sources are not packed into the FMU at the moment.)
 
 ## Licensing
 

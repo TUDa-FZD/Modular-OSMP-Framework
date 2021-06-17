@@ -24,7 +24,7 @@
 /* TODO add further profiles and profile generators here */
 #include <model/profiles/profile_example.hpp>
 
-bool CFZDSensorModel::try_load_profile(const std::string &name) {
+bool CFrameworkPackaging::try_load_profile(const std::string &name) {
     if (name == "example") {
         profile = model::profile::example::generate();
         return true;
