@@ -10,9 +10,6 @@
 [submodule "src/model/strategies/csv-output-gtobjects-strategy"]
 	path = src/model/strategies/csv-output-gtobjects-strategy
 	url = git@gitlab.com:tuda-fzd/perception-sensor-modeling/output-strategies/csv-output-gtobjects-strategy.git
-[submodule "src/model/strategies/pcd-output-logicaldetections-strategy"]
-	path = src/model/strategies/pcd-output-logicaldetections-strategy
-	url = git@gitlab.com:tuda-fzd/perception-sensor-modeling/output-strategies/pcd-output-logicaldetections-strategy.git
 [submodule "src/model/strategies/ros-output-gtobjects-strategy"]
 	path = src/model/strategies/ros-output-gtobjects-strategy
 	url = git@gitlab.com:tuda-fzd/perception-sensor-modeling/output-strategies/ros-output-gtobjects-strategy.git
