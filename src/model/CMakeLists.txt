@@ -155,7 +155,7 @@ if(ros_output_strategies)
                 message("Hi")
             endif()
         else()
-            message("ROS distro is unknown!")
+            message("No ROS found.")
         endif()
     elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
         message("Found OS for ROS-output-strategies: Windows")
@@ -168,36 +168,37 @@ if(ros_output_strategies)
     else()
         message(FATAL "No OS detected!")
     endif()
-    
-    #set(CATKIN_ENABLE_TESTING OFF CACHE BOOL "Let catkin create tests" FORCE)
-    find_package(catkin REQUIRED COMPONENTS
-        roscpp
-        rospy
-        std_msgs
-        geometry_msgs
-        message_generation
-        tf
-    )
 
-    # see here: https://github.com/PointCloudLibrary/pcl/issues/3680
-    # when this is fixed, we can remove the following 3 lines.
-    if(NOT DEFINED CMAKE_SUPPRESS_DEVELOPER_WARNINGS)
-        set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS 1 CACHE INTERNAL "No dev warnings")
-    endif()
-    find_package(PCL REQUIRED COMPONENTS common)
-
-    if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-        string(APPEND PCL_COMMON_LIBRARIES /pcl_common_release.lib)
-    endif()
-
-    foreach(strategy ${ros_output_strategies})
-        if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/strategies/${strategy})
-            message("Found strategy ${strategy}")
-            add_subdirectory(strategies/${strategy})
-        else()
-            message(FATAL_ERROR "Invalid strategy defined: ${strategy}")
+    if(ROS_FOUND)
+        #set(CATKIN_ENABLE_TESTING OFF CACHE BOOL "Let catkin create tests" FORCE)
+        find_package(catkin REQUIRED COMPONENTS
+            roscpp
+            rospy
+            std_msgs
+            geometry_msgs
+            message_generation
+            tf
+        )
+        # see here: https://github.com/PointCloudLibrary/pcl/issues/3680
+        # when this is fixed, we can remove the following 3 lines.
+        if(NOT DEFINED CMAKE_SUPPRESS_DEVELOPER_WARNINGS)
+            set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS 1 CACHE INTERNAL "No dev warnings")
         endif()
-    endforeach()
+        find_package(PCL REQUIRED COMPONENTS common)
+
+        if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+            string(APPEND PCL_COMMON_LIBRARIES /pcl_common_release.lib)
+        endif()
+
+        foreach(strategy ${ros_output_strategies})
+            if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/strategies/${strategy})
+                message("Found strategy ${strategy}")
+                add_subdirectory(strategies/${strategy})
+            else()
+                message(FATAL_ERROR "Invalid strategy defined: ${strategy}")
+            endif()
+        endforeach()
+    endif()
 endif()
 endif()
 

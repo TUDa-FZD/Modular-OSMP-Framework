@@ -145,7 +145,7 @@ Have a look at the existing strategies to get an idea about how easy it is to in
      $ sudo make install
      $ sudo ldconfig # refresh shared library cache.
      ```
-3. <ins>For ROS-Output-Strategies:</ins> Install ROS melodic (Ubuntu 18.04) / noetic (Ubuntu 20.04)
+3. <ins>For [ROS-Output-Strategies](https://gitlab.com/tuda-fzd/perception-sensor-modeling/output-strategies):</ins> Install ROS melodic (Ubuntu 18.04) / noetic (Ubuntu 20.04)
    * **Ubuntu 18.04: ROS melodic** <br> http://wiki.ros.org/melodic/Installation/Ubuntu (go with `desktop-full`)
    * **Ubuntu 20.04: ROS noetic** <br> http://wiki.ros.org/noetic/Installation/Ubuntu (go with `desktop-full`)
 
@@ -155,19 +155,7 @@ Have a look at the existing strategies to get an idea about how easy it is to in
     ```bash
     $ git clone https://gitlab.com/tuda-fzd/perception-sensor-modeling/modular-osmp-framework.git --recurse-submodules
     ```
-2. <ins>For ROS-Output-Strategies:</ins> Change CMakeLists.txt in every ROS-Strategy according to ROS-version
-   * In `src/model/strategies/ros-.../CMakeLists.txt` change the two lines
-     - **Ubuntu 18.04: ROS melodic**
-       ```CMake
-       list(APPEND CMAKE_PREFIX_PATH /opt/ros/melodic/)
-       set(PYTHONPATH /opt/ros/melodic/lib/python2.7/dist-packages)
-       ```
-     - **Ubuntu 20.04: ROS noetic**
-       ```CMake
-       list(APPEND CMAKE_PREFIX_PATH /opt/ros/noetic/)
-       set(PYTHONPATH /opt/ros/melodic/lib/python3/dist-packages)
-       ```
-3. Build the model by executing in the extracted project root directory:
+2. Build the model by executing in the extracted project root directory:
     ```bash
     $ mkdir cmake-build
     $ cd cmake-build
@@ -175,7 +163,7 @@ Have a look at the existing strategies to get an idea about how easy it is to in
     $ cmake -DCMAKE_BUILD_TYPE=Release -DFMU_INSTALL_DIR:PATH=/tmp ..
     $ make -j N_JOBS
     ```
-4. Take FMU from `FMU_INSTALL_DIR`
+3. Take FMU from `FMU_INSTALL_DIR`
 
     (Please note that sources are not packed into the FMU at the moment.)
 
