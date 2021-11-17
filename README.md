@@ -140,7 +140,8 @@ Have a look at the existing strategies to get an idea about how easy it is to in
      * Try to run `./autogen.sh`, if it failes, download the gmock-1.7.0.zip from https://pkgs.fedoraproject.org/repo/pkgs/gmock/gmock-1.7.0.zip/073b984d8798ea1594f5e44d85b20d66/gmock-1.7.0.zip, extract it into the protobuf folder and rename the gmock-1.7.0 folter to gmock.
      * Proceed with the install with
      ```bash
-     $ make
+     $ ./configure
+     $ make -j12
      $ sudo make install
      $ sudo ldconfig # refresh shared library cache.
      ```
