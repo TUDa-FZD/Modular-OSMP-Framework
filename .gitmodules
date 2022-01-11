@@ -13,3 +13,6 @@
 [submodule "src/model/strategies/ros-output-gtobjects-strategy"]
 	path = src/model/strategies/ros-output-gtobjects-strategy
 	url = https://gitlab.com/tuda-fzd/perception-sensor-modeling/output-strategies/ros-output-gtobjects-strategy.git
+[submodule "lib/fmi2"]
+	path = lib/fmi2
+	url = https://github.com/modelica/fmi-standard.git
