@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<srmd:SimulationResourceMetaData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://apps.pmsf.net/STMD/SimulationResourceMetaData SRMD.xsd"
+    xmlns:srmd="http://apps.pmsf.net/STMD/SimulationResourceMetaData"
+    version="0.5" name="Tool Meta-Data">
+	
+	<!-- This Template contains all SRMD Classifications and all ClassificationEntries defined in SET Level for Simulation Tools -->
+	
+	
+    <Classification xmlns="http://apps.pmsf.net/SSPTraceability/SSPTraceabilityCommon" type="de.setlevel.srmd.tool-meta-data">
+        
+        <!-- Mandatory Tool provided capabilities related information -->
+        <ClassificationEntry keyword="tool.provided-capabilities">Modular Sensor Model Development</ClassificationEntry>
+    
+        <!-- Tool related information -->
+        <ClassificationEntry keyword="tool.manufacturer">TU Darmstadt - FZD</ClassificationEntry>
+        <ClassificationEntry keyword="tool.name">Modular OSMP Framework</ClassificationEntry>
+        <ClassificationEntry keyword="tool.repository">https://gitlab.com/tuda-fzd/perception-sensor-modeling/modular-osmp-framework</ClassificationEntry>
+        <ClassificationEntry keyword="tool.documentation">https://gitlab.com/tuda-fzd/perception-sensor-modeling/modular-osmp-framework/-/blob/master/README.md</ClassificationEntry>
+        <ClassificationEntry keyword="tool.version">1.0</ClassificationEntry>
+        <ClassificationEntry keyword="tool.releasedate">18.06.2021</ClassificationEntry>
+        <ClassificationEntry keyword="tool.releasestatus">First release based on ASAM OSI 3.3</ClassificationEntry>
+        <ClassificationEntry keyword="tool.use-restrictions">Usage under EUPL License</ClassificationEntry>
+        <ClassificationEntry keyword="tool.purpose">Modular Sensor Model Development Conforming to OSMP</ClassificationEntry>
+    
+        <ClassificationEntry keyword="tool.intended-use">Modular Sensor Model Development Conforming to OSMP</ClassificationEntry>
+        <ClassificationEntry keyword="tool.intended-use.tcl"></ClassificationEntry>
+        <ClassificationEntry keyword="tool.intended-use.qualification.status"></ClassificationEntry>
+        <ClassificationEntry keyword="tool.intended-use.qualification.report"></ClassificationEntry>
+
+        <ClassificationEntry keyword="tool.limitations"></ClassificationEntry>
+    
+        <ClassificationEntry keyword="tool.supported.formats">OSI, OSMP, FMI</ClassificationEntry>
+        <ClassificationEntry keyword="tool.installation.requirements">https://gitlab.com/tuda-fzd/perception-sensor-modeling/modular-osmp-framework/-/blob/master/README.md</ClassificationEntry>
+        
+    </Classification>
+	
+</srmd:SimulationResourceMetaData>
+
