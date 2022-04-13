@@ -10,7 +10,7 @@
     <Classification xmlns="http://apps.pmsf.net/SSPTraceability/SSPTraceabilityCommon" type="de.setlevel.srmd.tool-meta-data">
         
         <!-- Mandatory Tool provided capabilities related information -->
-        <ClassificationEntry keyword="tool.provided-capabilities">Modular Sensor Model Development</ClassificationEntry>
+        <ClassificationEntry keyword="tool.provided-capabilities">Modular sensor model development and integration</ClassificationEntry>
     
         <!-- Tool related information -->
         <ClassificationEntry keyword="tool.manufacturer">TU Darmstadt - FZD</ClassificationEntry>
@@ -21,9 +21,9 @@
         <ClassificationEntry keyword="tool.releasedate">18.06.2021</ClassificationEntry>
         <ClassificationEntry keyword="tool.releasestatus">First release based on ASAM OSI 3.3</ClassificationEntry>
         <ClassificationEntry keyword="tool.use-restrictions">Usage under EUPL License</ClassificationEntry>
-        <ClassificationEntry keyword="tool.purpose">Modular Sensor Model Development Conforming to OSMP</ClassificationEntry>
+        <ClassificationEntry keyword="tool.purpose">The framework is based on adaptions of OSI Sensor Model Packaging (OSMP) to load individual code modules called strategies, where the acutal model logic is located. Additionally parameters from profiles can be loaded into the strategies. The framework can be used to generate an FMU model with Open Simulation Interface (OSI) packaged for use in simulation environments using FMI 2.0. A typical application is using this framework to develop a modular sensor model to be integrated in a simulator.</ClassificationEntry>
     
-        <ClassificationEntry keyword="tool.intended-use">Modular Sensor Model Development Conforming to OSMP</ClassificationEntry>
+        <ClassificationEntry keyword="tool.intended-use"></ClassificationEntry>
         <ClassificationEntry keyword="tool.intended-use.tcl"></ClassificationEntry>
         <ClassificationEntry keyword="tool.intended-use.qualification.status"></ClassificationEntry>
         <ClassificationEntry keyword="tool.intended-use.qualification.report"></ClassificationEntry>
